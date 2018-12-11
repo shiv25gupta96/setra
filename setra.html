@@ -1,0 +1,77 @@
+<HTML>
+    <head>
+        <TITLE> Server Health Report </TITLE>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link href="./style.css" rel="stylesheet">
+    </head>
+
+	<BODY>
+        <div class="wrapper">
+            <div class="sidebar">
+                <form class="form-group">
+                    <input type="text" placeholder="Search" class="form-control"></input>
+                </form>
+                <hr />
+                <div class="server-list content">  
+                    <div class="server-header" data-toggle="collapse" data-target="#content-server" aria-expanded="true">
+                        <small class="fas fa-plus mr-2"></small>
+                        <span>Content Servers</span>
+                    </div>
+                    <ul class="list-unstyled collapse show components" id="content-server">
+                        <li class="active">
+                            <a href="#">usbe1w2159
+                                <span class="badge badge-pill badge-light">
+                                    <strong>80%</strong><br>
+                                    <small>CPU</small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">usbe1w2159
+                                <span class="badge badge-pill badge-light">
+                                    <strong>80%</strong><br>
+                                    <small>CPU</small>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="server-list app">  
+                    <div class="server-header critical" data-toggle="collapse" data-target="#app-server" aria-expanded="true">
+                        <small class="fas fa-plus mr-2"></small>
+                        <span>Application Servers</span>
+                    </div>
+                    <ul class="list-unstyled collapse show components" id="app-server">
+                        <li>
+                            <a href="#" class="critical">usbe1w2159
+                                <span class="badge badge-pill badge-light">
+                                    <strong>80%</strong><br>
+                                    <small>CPU</small>
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">usbe1w2159
+                                <span class="badge badge-pill badge-light">
+                                    <strong>80%</strong><br>
+                                    <small>CPU</small>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+        <!----------JQuery Script-->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!----------PopperJS Script-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <!----------bootstrapJS Script-->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </BODY>
+</HTML>

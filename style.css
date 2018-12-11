@@ -1,0 +1,93 @@
+/***** Class to align the box-element vertically in the center -----*/
+.position-middle{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.critical{
+    background: rgba(255, 0, 0, 0.521) !important;
+}
+.critical::after{
+    position: absolute;
+    content: "\f071";
+    display: block;
+    color: red;
+    font-family: "Font Awesome 5 Free";
+    font-size: 1.5rem;
+    top: 50%;
+    right: 13%;
+    transform: translateY(-50%);
+    font-weight: 900;
+}
+a, a:hover, a:focus{
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+    margin-bottom: 2px;
+}
+
+body{
+    background-color: #eee;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper{
+    display: flex;
+    width: 100%;
+}
+.sidebar{
+    width: 340px;
+    height: 100vh;
+    color: #d0d0d0;
+    background-color: #2d2d2d;
+    overflow-x: hidden;
+}
+.sidebar .form-control{
+    width: 320px;
+    margin: 10px;
+    background-color: #efefef;
+}
+.sidebar hr{
+    background-color: #ccc;
+}
+.sidebar a{
+    display: block;
+    position: relative;
+    color: #fff;
+    width: 100%;
+    padding: 8px 10px;
+    background-color: transparent;
+    text-decoration: none;
+}
+.server-list .server-header{
+    position: relative;
+    cursor: pointer;
+    padding: 8px 10px;
+    margin-bottom: 2px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+}
+.server-list .server-header small{
+    font-size: 0.7em;
+}
+.server-list ul>li.active>a, 
+.server-list ul>li.active>a:focus, 
+.server-list ul>li.active>a:hover{
+    background-color: #4caf50;
+}
+.server-list ul>li>a:focus,
+.server-list ul>li>a:hover {
+    background-color: #404040;
+}
+.server-list ul>li span.badge{
+    display: inline-block;
+    position: absolute;
+    padding: 3px 12px;
+    top: 50%;
+    right: 30%;
+    transform: translateY(-50%);
+}
