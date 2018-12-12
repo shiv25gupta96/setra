@@ -39,7 +39,7 @@ body{
     width: 100%;
 }
 .sidebar{
-    width: 340px;
+    min-width: 340px;
     height: 100vh;
     color: #d0d0d0;
     background-color: #2d2d2d;
@@ -90,4 +90,52 @@ body{
     top: 50%;
     right: 30%;
     transform: translateY(-50%);
+}
+
+
+.report-content{
+    padding: 20px 25px;
+}
+
+.report-content > .row{
+    margin: 0;
+    margin-top: 30px;
+    justify-content: space-between;
+}
+.report-content .card{
+    min-width: 470px;
+    min-height: 200px;
+    max-height: 200px;
+    margin-top: 10px;
+    flex-basis: 0;
+    border-radius: 4px;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.15);
+}
+
+.report-content .card-header{
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-top: -10px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.card-header-orange{
+    background: linear-gradient(60deg,#ffa726,#fb8c00);
+    box-shadow: 0 2px 3px -1px #ffa8268c;
+}
+.card-header-green{
+    background: linear-gradient(60deg,#66bb6a,#43a047);
+    box-shadow: 0 2px 3px -1px #66bb6a8c;
+}
+.card-header-blue{
+    background: linear-gradient(60deg,#ab47bc,#8e24aa);
+    box-shadow: 0 2px 3px -1px #ab47bc8c;
+}
+.card-header-purple{
+    background: linear-gradient(60deg,#26c6da,#00acc1);
+    box-shadow: 0 2px 3px -1px #26c6da8c;
+}
+.report-content .card-header h5{
+    margin:0;
 }
