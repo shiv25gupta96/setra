@@ -39,6 +39,7 @@ body{
     width: 100%;
 }
 .sidebar{
+    position: fixed;
     min-width: 340px;
     height: 100vh;
     color: #d0d0d0;
@@ -94,12 +95,16 @@ body{
 
 
 .report-content{
+    position: relative;
+    width: calc(100% - 340px);
+    margin-right: 0px;
+    margin-left: 340px;
     padding: 20px 25px;
 }
 
 .report-content > .row{
     margin: 0;
-    margin-top: 30px;
+    margin-top: 15px;
     justify-content: space-between;
 }
 .report-content .card{
@@ -138,4 +143,10 @@ body{
 }
 .report-content .card-header h5{
     margin:0;
+}
+
+
+
+.system-processes, .system-services{
+
 }
