@@ -81,6 +81,7 @@ body{
     color: #d0d0d0;
     background-color: #2d2d2d;
     overflow-x: hidden;
+    z-index: 1000;
 }
 .sidebar .form-control{
     width: 320px;
@@ -107,6 +108,9 @@ body{
     font-size: 0.9rem;
     display: flex;
     align-items: center;
+}
+.server-list ul>li{
+    position: relative;
 }
 .server-list .server-header small{
     font-size: 0.7em;
@@ -141,6 +145,7 @@ body{
 .report-content > .row{
     margin: 0;
     margin-top: 15px;
+    flex-wrap: nowrap;
     justify-content: space-between;
 }
 .report-content .card{
@@ -151,6 +156,9 @@ body{
     flex-basis: 0;
     border-radius: 4px;
     box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.15);
+}
+.report-content .card:not(:last-of-type){
+    margin-right: 15px;
 }
 
 .report-content .card>.card-header{
@@ -221,8 +229,17 @@ body{
     align-items: center; 
 }
 
+.drive-wrapper{
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
 .disk-drive{
-    width: 165px;
+    flex: 0 0 40%;
 }
 
 .disk-drive p{
@@ -255,6 +272,7 @@ body{
 
 }
 .left-arrow, .right-arrow{
+    
 }
 
 
