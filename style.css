@@ -61,6 +61,8 @@ a, a:hover, a:focus{
 .fixed-table-layout{
     table-layout: fixed; 
 }
+
+
 body{
     background-color: #eee;
     padding: 0;
@@ -272,7 +274,7 @@ body{
 
 }
 .left-arrow, .right-arrow{
-    
+    cursor: pointer;
 }
 
 
