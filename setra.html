@@ -476,9 +476,13 @@
                 ul.children("li").first().addClass("active");
 
                 //console.log("#" + ul.find("li:first-of-type a").data("serverName"));
+
                 $("#" + ul.find("li:first-of-type a").data("serverName")).removeClass("d-none");
+
                 $(".disk-info .left-arrow, .disk-info .right-arrow").hide();
+
                 $(".disk-info .drive-wrapper").each(function(ind, elem){
+                    $(elem).data("driveToBeShown", 1);
                     $(elem).children().each(function(childInd, childElem){
                         var rightArrow = ($(elem).parents(".disk-info")).find(".right-arrow");
                         console.log($(elem).parents(".disk-info").find(".right-arrow"));
@@ -506,8 +510,8 @@
                 $(".report-content:not(.d-none)").addClass("d-none");
                 $("#" + $(ev.currentTarget).data("serverName")).removeClass("d-none");
             });
-            var driveToBeShown = 1;
             $(".disk-info div.left-arrow, .disk-info div.right-arrow").click(function(ev){
+                var driveToBeShown = $(ev.currentTarget).parent().children(".drive-wrapper").data("driveToBeShown");
                 var leftArrow=$(ev.currentTarget).parent().children(".left-arrow");
                 var rightArrow = $(ev.currentTarget).parent().children(".right-arrow");
                 var drives = $(ev.currentTarget).parent().children(".drive-wrapper").children();
@@ -533,7 +537,16 @@
                     }
                     console.log("drive End: " + driveToBeShown +", Clicked: Lefts");
                 }
+                $(ev.currentTarget).parent().children(".drive-wrapper").data("driveToBeShown", driveToBeShown);
             })
+            
+            // $(".card .card-header").click(function(ev){
+            //     $(ev.currentTarget).nextAll().toggle();
+            //     $(ev.currentTarget).parent().css({
+            //         "margin-bottom": 48,
+            //         "height": 0
+            //     });
+            // })
         </script>
     </BODY>
 </HTML>

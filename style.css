@@ -182,7 +182,7 @@ body{
 }
 
 .report-content .card > .card-body{
-    padding: 12px;
+    padding: 8px 12px;
 }
 .report-content .card > .card-footer{
     display: flex;
