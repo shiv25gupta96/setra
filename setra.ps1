@@ -3,43 +3,41 @@ $ServerList = Get-Content $ServerListFile -ErrorAction SilentlyContinue
 $result = @()  
 ForEach($computername in $ServerList)  
 { 
- 
-$AVGProc = Get-WmiObject -computername $computername -Class win32_processor |  
- select -exp LoadPercentage
-   
-$result += [PSCustomObject] @{  
-        ServerName = $computername 
-        CPULoad = ($AVGProc | measure -Average).Average
-    }
- }
-    $Outputreport = "<HTML><TITLE> Server Health Report </TITLE> 
-                     <BODY background-color:peachpuff> 
-                     <font color =""#99000"" face=""Microsoft Tai le""> 
-                     <H2> Server CPU Usage Report </H2></font> 
-                     <Table border=1 cellpadding=0 cellspacing=0> 
-                     <TR bgcolor=gray align=center> 
-                       <TD><B>Server Name</B></TD> 
-                       <TD><B>Avrg.CPU Utilization</B></TD> 
-                       " 
-                         
-    Foreach($Entry in $result)  
-     
-        {  
-          if(($Entry.CPULoad) -ge "30" -and ($Entry.CPULoad) -le "70")  
-          {  
-            $Outputreport += "<TR bgcolor=gray>"  
-          }
-		  elseif($($Entry.CPULoad) -ge "70")  
-          {  
-            $Outputreport += "<TR bgcolor=red>"  
-          }
-          else 
-           { 
-            $Outputreport += "<TR>"  
-          } 
-          $Outputreport += "<TD>$($Entry.Servername)</TD><TD align=center>$($Entry.CPULoad)</TD></TR>"  
-        } 
-     $Outputreport += "</Table></BODY></HTML>" 
+	$AVGProc = Get-WmiObject -computername $computername -Class win32_processor |  
+	Select-Object -ExpandProperty LoadPercentage
+	
+	$result += [PSCustomObject] @{  
+			ServerName = $computername;
+			CPULoad = $AVGProc;
+	}
+}
+$Outputreport = "<HTML><TITLE> Server Health Report </TITLE> 
+					<BODY background-color:peachpuff> 
+					<font color =""#99000"" face=""Microsoft Tai le""> 
+					<H2> Server CPU Usage Report </H2></font> 
+					<Table border=1 cellpadding=0 cellspacing=0> 
+					<TR bgcolor=gray align=center> 
+					<TD><B>Server Name</B></TD> 
+					<TD><B>Avrg.CPU Utilization</B></TD> 
+					" 
+						
+Foreach($Entry in $result)      
+{  
+	if(($Entry.CPULoad) -ge "30" -and ($Entry.CPULoad) -le "70")  
+	{  
+	$Outputreport += "<TR bgcolor=gray>"  
+	}
+	elseif($($Entry.CPULoad) -ge "70")  
+	{  
+	$Outputreport += "<TR bgcolor=red>"  
+	}
+	else 
+	{ 
+	$Outputreport += "<TR>"  
+	} 
+	$Outputreport += "<TD>$($Entry.Servername)</TD><TD align=center>$($Entry.CPULoad)</TD></TR>"  
+} 
+$Outputreport += "</Table></BODY></HTML>" 
 
 
 
