@@ -1,43 +1,42 @@
 $ServerListFile = ".\serverstestlist.txt"   
 $ServerList = Get-Content $ServerListFile -ErrorAction SilentlyContinue  
-$result = @()  
+$serverLoads = @()  
 ForEach($computername in $ServerList)  
 { 
-	$AVGProc = Get-WmiObject -computername $computername -Class win32_processor |  
-	Select-Object -ExpandProperty LoadPercentage
+	$AVGProc = Get-WmiObject -computername $computername -Class win32_processor | Select-Object -ExpandProperty LoadPercentage
 	
-	$result += [PSCustomObject] @{  
+	$serverLoads += [PSCustomObject] @{  
 			ServerName = $computername;
 			CPULoad = $AVGProc;
 	}
 }
-$Outputreport = "<HTML><TITLE> Server Health Report </TITLE> 
-					<BODY background-color:peachpuff> 
-					<font color =""#99000"" face=""Microsoft Tai le""> 
-					<H2> Server CPU Usage Report </H2></font> 
-					<Table border=1 cellpadding=0 cellspacing=0> 
-					<TR bgcolor=gray align=center> 
-					<TD><B>Server Name</B></TD> 
-					<TD><B>Avrg.CPU Utilization</B></TD> 
-					" 
+# $Outputreport = "<HTML><TITLE> Server Health Report </TITLE> 
+# 					<BODY background-color:peachpuff> 
+# 					<font color =""#99000"" face=""Microsoft Tai le""> 
+# 					<H2> Server CPU Usage Report </H2></font> 
+# 					<Table border=1 cellpadding=0 cellspacing=0> 
+# 					<TR bgcolor=gray align=center> 
+# 					<TD><B>Server Name</B></TD> 
+# 					<TD><B>Avrg.CPU Utilization</B></TD> 
+# 					" 
 						
-Foreach($Entry in $result)      
-{  
-	if(($Entry.CPULoad) -ge "30" -and ($Entry.CPULoad) -le "70")  
-	{  
-	$Outputreport += "<TR bgcolor=gray>"  
-	}
-	elseif($($Entry.CPULoad) -ge "70")  
-	{  
-	$Outputreport += "<TR bgcolor=red>"  
-	}
-	else 
-	{ 
-	$Outputreport += "<TR>"  
-	} 
-	$Outputreport += "<TD>$($Entry.Servername)</TD><TD align=center>$($Entry.CPULoad)</TD></TR>"  
-} 
-$Outputreport += "</Table></BODY></HTML>" 
+# Foreach($Entry in $serverLoads)      
+# {  
+# 	if(($Entry.CPULoad) -ge "30" -and ($Entry.CPULoad) -le "70")  
+# 	{  
+# 	$Outputreport += "<TR bgcolor=gray>"  
+# 	}
+# 	elseif($($Entry.CPULoad) -ge "70")  
+# 	{  
+# 	$Outputreport += "<TR bgcolor=red>"  
+# 	}
+# 	else 
+# 	{ 
+# 	$Outputreport += "<TR>"  
+# 	} 
+# 	$Outputreport += "<TD>$($Entry.Servername)</TD><TD align=center>$($Entry.CPULoad)</TD></TR>"  
+# } 
+# $Outputreport += "</Table></BODY></HTML>" 
 
 
 
@@ -48,9 +47,12 @@ $Outputreport += "</Table></BODY></HTML>"
 
 #region Variables and Arguments
 #$list = $args[0] #This accepts the argument you add to your scheduled task for the list of servers. i.e. list.txt
-$list = ".\serverstestlist.txt"
-$computers = get-content $list #grab the names of the servers/computers to check from the list.txt file.
+# $list = ".\serverstestlist.txt"
+# $computers = get-content $list #grab the names of the servers/computers to check from the list.txt file.
+
+
 # Set free disk space threshold below in percent (default at 10%)
+
 $thresholdspace = 20
 [int]$EventNum = 3
 [int]$ProccessNumToFetch = 10
@@ -178,14 +180,13 @@ table{ margin-left: 20px; }
 
 "@
 
-foreach ($computer in $computers) {
+foreach ($computer in $ServerList) {
 
-	$DiskInfo= Get-WMIObject -ComputerName $computer Win32_LogicalDisk | Where-Object{$_.DriveType -eq 3} | Where-Object{ ($_.freespace/$_.Size)*100 -lt $thresholdspace} `
-	| Select-Object SystemName, DriveType, VolumeName, Name, @{n='Size (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, @{n='FreeSpace (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, @{n='PercentFree';e={"{0:n2}" -f ($_.freespace/$_.size*100)}} | ConvertTo-HTML -fragment
+	$DiskInfo= Get-WMIObject -ComputerName $computer Win32_LogicalDisk | Where-Object { $_.DriveType -eq 3 -and ($_.freespace/$_.Size)*100 -lt $thresholdspace } | Select-Object SystemName, DriveType, VolumeName, Name, @{n='Size (GB)';e={"{0:n2}" -f ($_.size/1gb)}}, @{n='FreeSpace (GB)';e={"{0:n2}" -f ($_.freespace/1gb)}}, @{n='PercentFree';e={"{0:n2}" -f ($_.freespace/$_.size*100)}} | ConvertTo-HTML -fragment
 	
 	#region System Info
-	$OS = (Get-WmiObject Win32_OperatingSystem -computername $computer).caption
-	$SystemInfo = Get-WmiObject -Class Win32_OperatingSystem -computername $computer | Select-Object Name, TotalVisibleMemorySize, FreePhysicalMemory
+	$SystemInfo = Get-WmiObject -Class Win32_OperatingSystem -computername $computer | Select-Object Name, TotalVisibleMemorySize, FreePhysicalMemory, caption
+	$OS = $SystemInfo.caption
 	$TotalRAM = $SystemInfo.TotalVisibleMemorySize/1MB
 	$FreeRAM = $SystemInfo.FreePhysicalMemory/1MB
 	$UsedRAM = $TotalRAM - $FreeRAM
@@ -208,51 +209,49 @@ foreach ($computer in $computers) {
 			Status = $Service.State
 			StartMode = $Service.StartMode
 		}
-		
-	$ServicesReport += $row
-	
+		$ServicesReport += $row
 	}
 	
 	$ServicesReport = $ServicesReport | ConvertTo-Html -Fragment
 	#endregion
 		
 	#region Event Logs Report
-	$SystemEventsReport = @()
-	$SystemEvents = Get-EventLog -ComputerName $computer -LogName System -EntryType Error,Warning -Newest $EventNum
-	foreach ($event in $SystemEvents) {
-		$row = New-Object -Type PSObject -Property @{
-			TimeGenerated = $event.TimeGenerated
-			EntryType = $event.EntryType
-			Source = $event.Source
-			Message = $event.Message
-		}
-		$SystemEventsReport += $row
-	}
+	# $SystemEventsReport = @()
+	# $SystemEvents = Get-EventLog -ComputerName $computer -LogName System -EntryType Error,Warning -Newest $EventNum
+	# foreach ($event in $SystemEvents) {
+	# 	$row = New-Object -Type PSObject -Property @{
+	# 		TimeGenerated = $event.TimeGenerated
+	# 		EntryType = $event.EntryType
+	# 		Source = $event.Source
+	# 		Message = $event.Message
+	# 	}
+	# 	$SystemEventsReport += $row
+	# }
 			
-	$SystemEventsReport = $SystemEventsReport | ConvertTo-Html -Fragment
+	# $SystemEventsReport = $SystemEventsReport | ConvertTo-Html -Fragment
 	
-	$ApplicationEventsReport = @()
-	$ApplicationEvents = Get-EventLog -ComputerName $computer -LogName Application -EntryType Error,Warning -Newest $EventNum
-	foreach ($event in $ApplicationEvents) {
-		$row = New-Object -Type PSObject -Property @{
-			TimeGenerated = $event.TimeGenerated
-			EntryType = $event.EntryType
-			Source = $event.Source
-			Message = $event.Message
-		}
-		$ApplicationEventsReport += $row
-	}
+	# $ApplicationEventsReport = @()
+	# $ApplicationEvents = Get-EventLog -ComputerName $computer -LogName Application -EntryType Error,Warning -Newest $EventNum
+	# foreach ($event in $ApplicationEvents) {
+	# 	$row = New-Object -Type PSObject -Property @{
+	# 		TimeGenerated = $event.TimeGenerated
+	# 		EntryType = $event.EntryType
+	# 		Source = $event.Source
+	# 		Message = $event.Message
+	# 	}
+	# 	$ApplicationEventsReport += $row
+	# }
 	
-	$ApplicationEventsReport = $ApplicationEventsReport | ConvertTo-Html -Fragment
-	#endregion
+	# $ApplicationEventsReport = $ApplicationEventsReport | ConvertTo-Html -Fragment
+	# #endregion
 	
-	# Create the chart using our Chart Function
-	Create-PieChart -FileName ((Get-Location).Path + "\chart-$computer") $FreeRAM, $UsedRAM
-	$ListOfAttachments += "chart-$computer.png"
-	#region Uptime
-	# Fetch the Uptime of the current system using our Get-HostUptime Function.
-	$SystemUptime = Get-HostUptime -ComputerName $computer
-	#endregion
+	# # Create the chart using our Chart Function
+	# Create-PieChart -FileName ((Get-Location).Path + "\chart-$computer") $FreeRAM, $UsedRAM
+	# $ListOfAttachments += "chart-$computer.png"
+	# #region Uptime
+	# # Fetch the Uptime of the current system using our Get-HostUptime Function.
+	# $SystemUptime = Get-HostUptime -ComputerName $computer
+	# #endregion
 
 	# Create HTML Report for the current System being looped through
 	$CurrentSystemHTML = @"
