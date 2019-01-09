@@ -1,0 +1,142 @@
+"       <!----------JQuery Script 3.3.1-->
+        <script src=`"https://code.jquery.com/jquery-3.3.1.min.js`"></script>
+
+        <!----------PopperJS Script-->
+        <script src=`"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js`" integrity=`"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49`" crossorigin=`"anonymous`"></script>
+        
+        <!----------bootstrapJS Script-->
+        <script src=`"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js`" integrity=`"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy`" crossorigin=`"anonymous`"></script>
+
+        <!----------Overlay Scrollbars jQuery Script-->
+        <script type=`"text/javascript`" src=`"https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.6.1/js/jquery.overlayScrollbars.min.js`"></script>
+
+        <script>
+            
+            function defaults(){
+                var defaultMenu = `$('.server-list .server-header').first();
+                defaultMenu.attr(`"aria-expanded`", `"true`");
+                var ul = defaultMenu.next(`"ul[id`$='-server']`").toggleClass(`"show`");
+                defaultMenu.children('small.fas').first().toggleClass('fa-minus').toggleClass(`"fa-plus`");
+                ul.children(`"li`").first().addClass(`"active`");
+
+                //console.log(`"#`" + ul.find(`"li:first-of-type a`").data(`"serverName`"));
+
+                `$(`"#`" + ul.find(`"li:first-of-type a`").data(`"serverName`")).removeClass(`"d-none`");
+
+                `$(`".disk-info .left-arrow, .disk-info .right-arrow`").hide();
+
+                `$(`".disk-info .drive-wrapper`").each(function(ind, elem){
+                    `$(elem).data(`"driveToBeShown`", 1);
+                    `$(elem).children().each(function(childInd, childElem){
+                        var rightArrow = (`$(elem).parents(`".disk-info`")).find(`".right-arrow`");
+                        // console.log(`$(elem).parents(`".disk-info`").find(`".right-arrow`"));
+                        if(childInd > 1){
+                            `$(childElem).addClass(`"d-none`");
+                            rightArrow.show();
+                        }
+                    });
+                });
+
+                `$(`".report-content:not(.d-none) .system-processes, .report-content:not(.d-none) .system-services`").each(function(ind, elem){
+                    `$(elem).children(`".card-body`").height(`$(elem).height() - 38 - `$(elem).children(`".card-footer`").height());
+                    var cardBody = `$(elem).children(`".card-body`");
+                    cardBody.children(`".table-body`").height(cardBody.height() - cardBody.children(`".table-head`").height() - 16);
+                    cardBody.children(`".table-body`").overlayScrollbars({
+                        paddingAbsolute: true
+                    });
+                    //console.log(elem);
+                })
+                
+            };
+            
+            `$(window).ready(function (ev){
+                var sidebarBodyHeight = `$(`".sidebar`").height() - `$(`".sidebar form`").height() - 10 - 34;
+                `$(`".sidebar .sidebar-body`").height(sidebarBodyHeight);
+                
+                `$(`".sidebar .sidebar-body`").overlayScrollbars({
+                    className: `"os-theme-light`",
+                    scrollbars: {
+                        autoHide: `"leave`"
+                    }
+                })
+                `$(`".report-content`").overlayScrollbars({
+                    paddingAbsolute: true,
+                    clipAlways: false,
+                    scrollbars: {
+                        autoHide: `"leave`"
+                    }
+                });
+                
+                defaults();
+            })
+
+            `$(`".server-list .server-header`").click(function(event){
+                var fas=`$(event.currentTarget).children('small.fas');
+                fas.toggleClass('fa-plus').toggleClass('fa-minus');
+            });
+
+            `$(`"ul[id`$='-server'] a`").click(function(ev){
+                /* for removing critical, when you visit the critical server */
+                // `$(ev.currentTarget).parent(`"li.critical`").parent(`"ul`").prev(`".server-header`").removeClass(`"critical`");
+                // `$(ev.currentTarget).parent(`"li.critical`").removeClass(`"critical`");
+                var targetElement = `$(`"#`" + `$(ev.currentTarget).data(`"serverName`"));
+
+                `$(`"ul[id`$='-server'] li.active`").removeClass(`"active`");
+                `$(ev.currentTarget).parent(`"li`").addClass(`"active`");
+
+                `$(`".report-content:not(.d-none)`").addClass(`"d-none`");
+                targetElement.removeClass(`"d-none`");
+
+                targetElement.children(`".system-processes, .system-services`").each(function(ind, elem){
+                    `$(elem).children(`".card-body`").height(`$(elem).height() - 38 - `$(elem).children(`".card-footer`").height());
+                    var cardBody = `$(elem).children(`".card-body`");
+                    cardBody.children(`".table-body`").height(cardBody.height() - cardBody.children(`".table-head`").height() - 16);
+                    cardBody.children(`".table-body`").overlayScrollbars({
+                        paddingAbsolute: true
+                    });
+                    //console.log(elem);
+                })
+            });
+
+            `$(`".disk-info div.left-arrow, .disk-info div.right-arrow`").click(function(ev){
+                var driveToBeShown = `$(ev.currentTarget).parent().children(`".drive-wrapper`").data(`"driveToBeShown`");
+                var leftArrow=`$(ev.currentTarget).parent().children(`".left-arrow`");
+                var rightArrow = `$(ev.currentTarget).parent().children(`".right-arrow`");
+                var drives = `$(ev.currentTarget).parent().children(`".drive-wrapper`").children();
+                if(`$(ev.currentTarget).is(rightArrow)){
+                    // console.log(`"drive Start: `" + driveToBeShown +`", Clicked: Right`");
+                    leftArrow.show();
+                    driveToBeShown += 1;
+                    `$(drives[driveToBeShown-2]).addClass(`"d-none`");
+                    `$(drives[driveToBeShown]).removeClass(`"d-none`");
+                    if(driveToBeShown + 1 == drives.length){
+                        rightArrow.hide();
+                    }
+                    // console.log(`"drive End: `" + driveToBeShown +`", Clicked: Right`");
+                }
+                if(`$(ev.currentTarget).is(leftArrow)){
+                    // console.log(`"drive Start: `" + driveToBeShown +`", Clicked: Lefts`");
+                    rightArrow.show();
+                    `$(drives[driveToBeShown]).addClass(`"d-none`");
+                    `$(drives[driveToBeShown-2]).removeClass(`"d-none`");
+                    driveToBeShown -= 1;
+                    if(driveToBeShown == 1){
+                        leftArrow.hide();
+                    }
+                    // console.log(`"drive End: `" + driveToBeShown +`", Clicked: Lefts`");
+                }
+                `$(ev.currentTarget).parent().children(`".drive-wrapper`").data(`"driveToBeShown`", driveToBeShown);
+            })
+            
+            `$(`".card .card-header`").click(function(ev){
+                `$(ev.currentTarget).nextAll().animate({
+                    height: `"toggle`"
+                }, 400, `"linear`");
+                `$(ev.currentTarget).toggleClass(`"resize-header`");
+                `$(ev.currentTarget).children(`"i.fas.state`").toggleClass(`"fa-minus`").toggleClass(`"fa-plus`");
+                `$(ev.currentTarget).parent().toggleClass(`"shrink-card`");
+            })
+
+        </script>
+    </BODY>
+</HTML>"

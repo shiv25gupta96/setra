@@ -1,0 +1,148 @@
+"       <div class=`"report-content container d-none os-host-flexbox`" id=`"server-$server`">
+            <div style=`"padding: 20px 0 20px 20px`">
+                <div class=`"report-header`">
+                    <h6>$server Server Report</h6>
+                </div>
+                <div class=`"row`">                
+                    <div class=`"column`">
+                        <div class=`"card system-info`">
+                            <div class=`"card-header lgradient-orange`">
+                                <h5>System Info</h5>
+                                <i class=`"fas fa-minus state`"></i>
+                            </div>
+                            <div class=`"card-body`">
+                                <table class=`"table`">
+                                    <tr>
+                                        <th scope=`"row`">System Uptime</th>
+                                        <td>$($SystemInfo.$server.sysUptime)</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope=`"row`">Operating System</th>
+                                        <td>$($SystemInfo.$server.sysName)</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th scope=`"row`">Total RAM(GB)</th>
+                                        <td>$($SystemInfo.$server.sysTotalRAM)</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th scope=`"row`">Free RAM(GB)</th>
+                                        <td>$($SystemInfo.$server.sysFreeRAM)</td>
+                                    </tr>
+                                    
+                                    <tr>
+                                        <th scope=`"row`">Percent free RAM</th>
+                                        <td>$($SystemInfo.$server.sysRAMPercent)</td>
+                                    </tr>
+                                    
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class=`"card system-processes`">
+                            <div class=`"card-header lgradient-purple`">
+                                <h5>System Processes</h5>
+                                <small>Top 10 Highhest Memory Usage</small>
+                                <i class=`"fas fa-minus state`"></i>
+                            </div>
+                            <div class=`"card-body`">
+                                <div class=`"table-head`">
+                                    <table class=`"table fixed-table-layout`">
+                                        <tr class=`"tcolor-purple`">
+                                            <th width=`"60%`">Process Name</th>
+                                            <th>ID</th>
+                                            <th>WS</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class=`"table-body`">
+                                    <table class=`"table fixed-table-layout`">"
+                                    foreach($process in $SystemInfo.$server.processes){
+                                        "<tr>
+                                            <td width=`"60%`">$($process.processName)</td>
+                                            <td>$($process.id)</td>
+                                            <td>$($process.ws)</td>
+                                        </tr>"
+                                    }
+                                    "</table>
+                                </div>
+                            </div>
+                            <div class=`"card-footer`">
+                                <span class=`"mr-2`">*</span> 
+                                <span>The following 10 processes are those consuming the highest amount of Working Set(WS) Memory (bytes) on $server Server</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=`"column`">
+                        <div class=`"card disk-info`">
+                            <div class=`"card-header lgradient-green`">
+                                <h5>Disk Info</h5>
+                                <i class=`"fas fa-minus state`"></i>
+                            </div>
+                            <div class=`"card-body row`">
+                                <div class=`"left-arrow hide`">
+                                    <img src=`"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi44OSAzMC42NyI+PGRlZnM+PHN0eWxlPi5mNzEzZjU0Ny05YTI4LTRkNjMtYjU3MS02ZDU0MzYwNjY3NmZ7ZmlsbDojYWFhO308L3N0eWxlPjwvZGVmcz48dGl0bGU+bGVmdC1hcnJvdzwvdGl0bGU+PGcgaWQ9ImRhNjhmYjI1LTczNmQtNDI2ZS1iMzkzLWMxMjgzNGNiOTM1NiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iOTk3MDhkY2QtMmE0Ny00YjczLThjM2YtM2MwNzBkYWU5M2M2IiBkYXRhLW5hbWU9Ik1haW4gUGFuZSI+PGcgaWQ9IjQ0ODM0OTcwLTZmMWEtNDhhNC1hNmM0LTQ5NTE1M2MxM2M0MSIgZGF0YS1uYW1lPSJEaXNrSW5mbyI+PGcgaWQ9IjJlNTliNTNmLTViYjUtNDNiNy1hYWJhLThjZDc0MGQzMjI4MCIgZGF0YS1uYW1lPSJCb3ggQ29udGVudCI+PGcgaWQ9ImFiZTJhMjZmLTYwODUtNDcwYS1iZTRmLTZiOTVmMDkyNTM2NSIgZGF0YS1uYW1lPSJyaWdodCBhcnJvdyI+PHBhdGggaWQ9ImFiYzY0MTZlLTYwYjItNGE1Ni1iYjAyLTZiNWNhNDgyYjg2ZiIgZGF0YS1uYW1lPSJDaGV2cm9uIFJpZ2h0IiBjbGFzcz0iZjcxM2Y1NDctOWEyOC00ZDYzLWI1NzEtNmQ1NDM2MDY2NzZmIiBkPSJNLjQ1LDE2LjQzLDE0LjI0LDMwLjIyQTEuNTUsMS41NSwwLDAsMCwxNi40MywyOEwzLjczLDE1LjM0LDE2LjQzLDIuNjRBMS41NSwxLjU1LDAsMCwwLDE0LjI0LjQ1TC40NSwxNC4yNEExLjU2LDEuNTYsMCwwLDAsLjQ1LDE2LjQzWiIvPjwvZz48L2c+PC9nPjwvZz48L2c+PC9zdmc+`"/>
+                                </div>
+                                <div class=`"drive-wrapper`">"
+                                    foreach($drive in $SystemInfo.$server.drives){
+                                    "<div class=`"disk-drive label-$($drive.name[0].toString().toUpper())`">
+                                        <img src=`"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMC41IDMwLjM4Ij48ZGVmcz48c3R5bGU+LlwzNyBlYTZlODFlLWM3MTYtNDA4Yy1iOWNkLWYyNzhkNzU1YjhiNntmaWxsOiM5OTk7fS5cMzQgNjU2NzMyNi0wMjJlLTQ2MTYtOTA5Yy04ZWJlYjdiNDg2MTksLlwzNyBlYTZlODFlLWM3MTYtNDA4Yy1iOWNkLWYyNzhkNzU1YjhiNiwuZTFhMTc5NmUtYjlhZC00YTgwLWEzNzAtOGU1NzYxMzQyZDBke3N0cm9rZTojNTU1O3N0cm9rZS1taXRlcmxpbWl0OjEwO30uXDM0IDY1NjczMjYtMDIyZS00NjE2LTkwOWMtOGViZWI3YjQ4NjE5LC5lMWExNzk2ZS1iOWFkLTRhODAtYTM3MC04ZTU3NjEzNDJkMGR7ZmlsbDojNTU1O30uZTFhMTc5NmUtYjlhZC00YTgwLWEzNzAtOGU1NzYxMzQyZDBke3N0cm9rZS13aWR0aDowLjVweDt9LlwzNCA2NTY3MzI2LTAyMmUtNDYxNi05MDljLThlYmViN2I0ODYxOXtzdHJva2Utd2lkdGg6MC4yNXB4O308L3N0eWxlPjwvZGVmcz48dGl0bGU+QXNzZXQgMTwvdGl0bGU+PGcgaWQ9IjE1YTAwYWUwLWEwYjgtNDgwNC1iNjkxLWNlZDJkMmFiY2M2ZCIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iZTQ2MmFjM2QtOWY1OS00MmVjLTljZDctNTY1OTI5MTMxMjE5IiBkYXRhLW5hbWU9Ik1haW4gUGFuZSI+PGcgaWQ9ImY0ZWUwYmUwLTJmMmYtNDYyNi05Nzg3LWYxOWJlYWJjNThhMiIgZGF0YS1uYW1lPSJEaXNrSW5mbyI+PGcgaWQ9ImU4NjY1NGMyLTM0ZGEtNDBkYi1hZGMwLTM2YzBkZGU4NzE1NSIgZGF0YS1uYW1lPSJCb3ggQ29udGVudCI+PGcgaWQ9ImM5YjlhNDA4LTBmNTEtNDI1Zi05YmNkLTUyMmUzOTlkNTZiZCIgZGF0YS1uYW1lPSJEaXNrMSI+PHBhdGggY2xhc3M9IjdlYTZlODFlLWM3MTYtNDA4Yy1iOWNkLWYyNzhkNzU1YjhiNiIgZD0iTTE2LjI1LDIwLjEzbDEwLDEuNVYxMS4xM2gtMTBaIi8+PHBhdGggY2xhc3M9IjdlYTZlODFlLWM3MTYtNDA4Yy1iOWNkLWYyNzhkNzU1YjhiNiIgZD0iTTI2LjI1LjYzbC0xMCwydjdoMTBaIi8+PHBhdGggY2xhc3M9IjdlYTZlODFlLWM3MTYtNDA4Yy1iOWNkLWYyNzhkNzU1YjhiNiIgZD0iTTQuMjUsMTguMTNsMTAsMS41di04LjVoLTEwWiIvPjxwYXRoIGNsYXNzPSI3ZWE2ZTgxZS1jNzE2LTQwOGMtYjljZC1mMjc4ZDc1NWI4YjYiIGQ9Ik0xNC4yNSwzLjEzbC0xMCwydjQuNWgxMFoiLz48cGF0aCBjbGFzcz0iZTFhMTc5NmUtYjlhZC00YTgwLWEzNzAtOGU1NzYxMzQyZDBkIiBkPSJNMjguNzUsMzAuMTNoLTI3YTEuNSwxLjUsMCwwLDEtMS41LTEuNXYtNGExLjUsMS41LDAsMCwxLDEuNS0xLjVoMjdhMS41LDEuNSwwLDAsMSwxLjUsMS41djRBMS41LDEuNSwwLDAsMSwyOC43NSwzMC4xM1ptLTI3LTZhLjUuNSwwLDAsMC0uNS41djRhLjUuNSwwLDAsMCwuNS41aDI3YS41LjUsMCwwLDAsLjUtLjV2LTRhLjUuNSwwLDAsMC0uNS0uNVoiLz48cGF0aCBjbGFzcz0iZTFhMTc5NmUtYjlhZC00YTgwLWEzNzAtOGU1NzYxMzQyZDBkIiBkPSJNNC4yNSwyOC42M2EyLDIsMCwxLDEsMi0yQTIsMiwwLDAsMSw0LjI1LDI4LjYzWm0wLTNhMSwxLDAsMSwwLDEsMUExLDEsMCwwLDAsNC4yNSwyNS42M1oiLz48cGF0aCBjbGFzcz0iZTFhMTc5NmUtYjlhZC00YTgwLWEzNzAtOGU1NzYxMzQyZDBkIiBkPSJNMjcuNzUsMjcuMTNoLTIwYS41LjUsMCwwLDEsMC0xaDIwYS41LjUsMCwwLDEsMCwxWiIvPjxwYXRoIGNsYXNzPSI0NjU2NzMyNi0wMjJlLTQ2MTYtOTA5Yy04ZWJlYjdiNDg2MTkiIGQ9Ik0yNi4yNSwyMi4xM2gtLjA3bC0xMC0xLjVhLjUuNSwwLDAsMS0uNDMtLjQ5di05YS41LjUsMCwwLDEsLjUtLjVoMTBhLjUuNSwwLDAsMSwuNS41djEwLjVBLjUuNSwwLDAsMSwyNi4yNSwyMi4xM1ptLTkuNS0yLjQzLDksMS4zNVYxMS42M2gtOVoiLz48cGF0aCBjbGFzcz0iNDY1NjczMjYtMDIyZS00NjE2LTkwOWMtOGViZWI3YjQ4NjE5IiBkPSJNMjYuMjUsMTAuMTNoLTEwYS41LjUsMCwwLDEtLjUtLjV2LTdhLjUuNSwwLDAsMSwuNC0uNDlsMTAtMmEuNS41LDAsMCwxLC42LjQ5djlBLjUuNSwwLDAsMSwyNi4yNSwxMC4xM1ptLTkuNS0xaDlWMS4yNGwtOSwxLjhaIi8+PHBhdGggY2xhc3M9IjQ2NTY3MzI2LTAyMmUtNDYxNi05MDljLThlYmViN2I0ODYxOSIgZD0iTTE0LjI1LDIwLjEzaC0uMDdsLTEwLTEuNWEuNS41LDAsMCwxLS40My0uNDl2LTdhLjUuNSwwLDAsMSwuNS0uNWgxMGEuNS41LDAsMCwxLC41LjV2OC41QS41LjUsMCwwLDEsMTQuMjUsMjAuMTNabS05LjUtMi40Myw5LDEuMzVWMTEuNjNoLTlaIi8+PHBhdGggY2xhc3M9IjQ2NTY3MzI2LTAyMmUtNDYxNi05MDljLThlYmViN2I0ODYxOSIgZD0iTTE0LjI1LDEwLjEzaC0xMGEuNS41LDAsMCwxLS41LS41VjUuMTNhLjUuNSwwLDAsMSwuNC0uNDlsMTAtMmEuNS41LDAsMCwxLC42LjQ5djYuNUEuNS41LDAsMCwxLDE0LjI1LDEwLjEzWm0tOS41LTFoOVYzLjc0bC05LDEuOFoiLz48L2c+PC9nPjwvZz48L2c+PC9nPjwvc3ZnPg==`"/>
+                                        <span>$(If(-not $drive.VolumeName){ "Drive " } else {$drive.VolumeName}) ($($drive.name.toString().toUpper()))</span>
+                                        <div class=`"progress lgradient-green`">
+                                            <div class=`"progress-bar`" role=`"progressbar`" style=`"width: $($drive.PercentFree)%;`" aria-valuenow=`"$($drive.PercentFree)`" aria-valuemin=`"0`" aria-valuemax=`"100`">$($drive.PercentFree)%</div>
+                                        </div>
+                                        <p>
+                                            $($drive.FreeSpace) GB free of $($drive.Size) GB 
+                                        </p>
+                                    </div>"
+                                    }
+                                "</div>
+                                <div class=`"right-arrow hide`">
+                                    <img src=`"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNi44OSAzMC42NyI+PGRlZnM+PHN0eWxlPi5cMzIgNjE3MTk3YS1lM2I4LTRlMDItYmVkZS1iMTZjOTVlNmQzYjV7ZmlsbDojYWFhO308L3N0eWxlPjwvZGVmcz48dGl0bGU+cmlnaHQtYXJyb3c8L3RpdGxlPjxnIGlkPSJmNTlkNWQ0My0xNTAyLTQ1MDMtYjRkZS04ZDM1NDI3YTkyNGEiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+PGcgaWQ9IjJiYjYxZmI5LTM0YmYtNDczNS05MGMzLTQ4YWE5NzA0ZDM5OSIgZGF0YS1uYW1lPSJNYWluIFBhbmUiPjxnIGlkPSI0MGU4ODdhNS01NDMxLTRjMDMtODQzNC1hZDc1ZDA5ODg0NTQiIGRhdGEtbmFtZT0iRGlza0luZm8iPjxnIGlkPSI0MTFjMmZiMC04ZjQ4LTQwNjQtYTc1ZS0yN2Q2NjQ0ZGE4ZDYiIGRhdGEtbmFtZT0iQm94IENvbnRlbnQiPjxnIGlkPSJmN2I1NzZhNi1jZDhjLTRhNTgtYWVmYS0zN2ExOWU4MWQ0MzIiIGRhdGEtbmFtZT0ibGVmdCBhcnJvdyI+PHBhdGggaWQ9IjExNjk0OWZmLWYyMzAtNGIyMS1iN2MxLWQyMjljY2I0NjQyOCIgZGF0YS1uYW1lPSJDaGV2cm9uIFJpZ2h0IiBjbGFzcz0iMjYxNzE5N2EtZTNiOC00ZTAyLWJlZGUtYjE2Yzk1ZTZkM2I1IiBkPSJNMTYuNDQsMTQuMjQsMi42NS40NUExLjU1LDEuNTUsMCwwLDAsLjQ1LDIuNjRsMTIuNywxMi42OUwuNDYsMjhhMS41NSwxLjU1LDAsMCwwLDIuMTksMi4xOUwxNi40NCwxNi40M0ExLjU2LDEuNTYsMCwwLDAsMTYuNDQsMTQuMjRaIi8+PC9nPjwvZz48L2c+PC9nPjwvZz48L3N2Zz4=`"/>
+                                </div>
+                            </div>
+                            <div class=`"card-footer`">
+                                <span class=`"mr-2`">*</span> 
+                                <span>Drive(s) listed above have less than $thresholdSpace% free space. Drives above this threshold will not be listed.</span>
+                            </div>
+                        </div>
+                        
+                        <div class=`"card system-services`">
+                            <div class=`"card-header lgradient-blue`">
+                                <h5>System Services</h5>
+                                <small>Automatic Startup but not running</small>
+                                <i class= `"fas fa-minus state`"></i>
+                            </div>
+                            <div class=`"card-body`">
+                                <div class=`"table-head`">
+                                    <table class=`"table fixed-table-layout`">
+                                        <tr class=`"tcolor-blue`">
+                                            <th>Status</th>
+                                            <th width=`"60%`">Name</th>
+                                            <th>StartMode</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class=`"table-body`">
+                                    <table class=`"table fixed-table-layout`">"
+                                    foreach($service in $SystemInfo.$server.services){
+                                        "<tr>
+                                            <td>$($service.State)</td>
+                                            <td width=`"60%`">$($service.Name)</td>
+                                            <td>$($service.StartMode)</td>
+                                        </tr>"
+                                    }
+                                    "</table>
+                                </div>
+                            </div>
+                            <div class=`"card-footer`">
+                                <span class=`"mr-2`">*</span> 
+                                <span>The following services are those which are set to Automatic startup type, yet are currently not running on current server</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>"

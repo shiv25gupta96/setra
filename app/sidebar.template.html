@@ -1,0 +1,26 @@
+"<div class=`"sidebar`">
+    <form class=`"form-group`">
+        <input type=`"text`" placeholder=`"Search`" class=`"form-control`"></input>
+    </form>
+    <hr />
+    <div class=`"sidebar-body`">
+        <div class=`"server-list content`">  
+            <div class=`"server-header`" data-toggle=`"collapse`" data-target=`"#content-server`" aria-expanded=`"false`">
+                <small class=`"fas fa-plus mr-2`"></small>
+                <span>Current Servers</span>
+            </div>
+            <ul class=`"list-unstyled collapse components`" id=`"content-server`">"
+            foreach($server in $ServerList){
+                "<li>
+                    <a href=`"#`" data-server-name=`"server-$server`">$server
+                        <span class=`"badge badge-pill badge-light`">
+                            <strong>$($SystemInfo.$server.CPULoad)%</strong><br>
+                            <small>CPU</small>
+                        </span>
+                    </a>
+                </li>"
+            }
+            "</ul>
+        </div>
+    </div>
+</div>"
