@@ -1,4 +1,4 @@
-$ServerListFile = ".\serverstestlist.txt"   
+$ServerListFile = ".\Resources\serverstestlist.txt"   
 $ServerList = Get-Content $ServerListFile -ErrorAction SilentlyContinue  
 $thresholdSpace = 20
 [int]$ProccessNumToFetch = 10
@@ -58,7 +58,7 @@ $HTMLHeader = "<HTML>
         <!--Overlay Scrollbars-->
         <link rel=`"stylesheet`" href=`"https://cdnjs.cloudflare.com/ajax/libs/overlayscrollbars/1.6.1/css/OverlayScrollbars.min.css`" />
         <style>
-            $(Get-Content -Path 'style.min.css')
+            $(Get-Content -Path './Resources/Styles/style.min.css')
         </style>
     </head>"
 
@@ -66,40 +66,44 @@ $HTMLBody = & ({
     "`n<BODY>
             <div class=`"wrapper`">
         "
-        & ([ScriptBlock]::Create($(Get-Content -Path 'app/sidebar.template.html' | Out-String)))
+        & ([ScriptBlock]::Create($(Get-Content -Path './Resources/Templates/sidebar.template.html' | Out-String)))
 
         foreach($server in $ServerList){
             
-            & ([ScriptBlock]::Create($(Get-Content -Path 'app/report-content.template.html' | Out-String)))
+            & ([ScriptBlock]::Create($(Get-Content -Path './Resources/Templates/report-content.template.html' | Out-String)))
         }
 })
 
-$HTMLEnd = & ([ScriptBlock]::Create($(Get-Content -Path 'app/scripts.txt' | Out-String)))
+$HTMLEnd = & ([ScriptBlock]::Create($(Get-Content -Path 'scripts.txt' | Out-String)))
 
-$HTMLHeader + $HTMLBody + $HTMLEnd | Out-File ".\testNew.html" -Encoding utf8
+$HTMLHeader + $HTMLBody + $HTMLEnd | Out-File ".\Output\testNew.html" -Encoding utf8
 
-# $fromaddress = "autoemail-donotreply@external.emdmillipore.com" 
-#$toaddress ="Aishwarya.Rajagopal@external.emdmillipore.com, prince.kumar-singh@external.emdmillipore.com, ashit.swain@external.emdmillipore.com, ramu.sannappanavar@external.emdmillipore.com, devesh.a.sharma@external.emdmillipore.com, akash.biswas@external.emdmillipore.com, mohamed-mydeen.sandu-abdul-kader@external.emdmillipore.com" 
-# $toaddress = "shivam.gupta@external.merckgroup.com" 
-# # $CCaddress = "shivam.gupta@external.merckgroup.com" 
-# $Subject = "Millipore Applications Server CPU Status Report" 
-# $body = "Please check the attachment!"
-# $attachment = ".\testNew.html"
-# $smtpserver = "smtpgw.merck.de"
+$fromaddress = "autoemail-donotreply@setra.com" 
+$toaddress ="shivam25gupta96@gmail.com" 
+$Subject = "Sever Applications Status Report" 
+$body = "Please check the attachment!"
+$attachment = "./app/Output/testNew.html"
+$smtpserver = "smtp.gmail.com"
+$SMTPPort = "587"
+$Username = "shivam25gupta96@gmail.com"
+$Password = "csdoyktbzcdmjlac"
 
 #################################### 
  
-# $message = new-object System.Net.Mail.MailMessage 
-# $message.From = $fromaddress 
-# $message.To.Add($toaddress) 
-# # $message.CC.Add($CCaddress) 
-# $message.IsBodyHtml = $false 
-# $message.Subject = $Subject 
-# $attach = new-object Net.Mail.Attachment($attachment)
-# $message.Attachments.Add($attach) 
-# $message.body = $body 
-# # $message.body = $HTMLmessage
-# $smtp = new-object Net.Mail.SmtpClient($smtpserver) 
-# $smtp.Send($message)
+$message = new-object System.Net.Mail.MailMessage 
+$message.From = $fromaddress 
+$message.To.Add($toaddress) 
+# $message.CC.Add($CCaddress) 
+$message.IsBodyHtml = $false 
+$message.Subject = $Subject 
+$attach = new-object Net.Mail.Attachment($attachment)
+$message.Attachments.Add($attach) 
+$message.body = $body 
+# $message.body = $HTMLmessage
+
+$smtp = new-object System.Net.Mail.SmtpClient($smtpserver, $SMTPPort) 
+$smtp.EnableSsl = $true
+$smtp.Credentials = New-Object System.Net.NetworkCredential($Username, $Password)
+$smtp.Send($message)
 
 Write-Verbose "$(Get-Date): Script completed!"
